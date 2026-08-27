@@ -53,13 +53,23 @@ public class App {
                 System.out.println(players.get(j).getName() + " attacked -> " + players.get(target).stat());
             }
             for (int j = players.size() - 1; j >= 0;j--) {
-                if (players.get(j).getLife() <= 0) {
+                if (players.get(j).getLife() <= 0 && players.get(j).getNocauteado() == false) {
                     players.get(j).setNocauteado();
                     KO++;
                 }
             }
             if (KO >= playerCount - 1) {
-                //coloque sistema que mostre o vencedor ou empate
+                if (KO == playerCount) {
+                    System.out.println("todo mundo morreu, acabo.");
+                    break;
+                }
+                for (Character character : players) {
+                    if (character.getNocauteado()) {
+                        continue;
+                    } else {
+                        System.out.println(character.getName() + " Venceu com " + character.getLife() + " de vida");
+                    }
+                }
                 break;
             }
         }

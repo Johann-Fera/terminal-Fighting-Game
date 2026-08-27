@@ -30,8 +30,26 @@ public class App {
                     continue;
                 }
                 // colocar textos para impedir ataquer estranhos/invalidos
-                System.out.println(players.get(j).getName() + " Coloque o numero de quem deseja atacar");
-                int target = scan.nextInt();
+                System.out.println(players.get(j).getName() + " Coloque o numero de quem deseja atacar:");
+                int target = -1;
+                while (true) {
+                    try {
+                        target = scan.nextInt();
+                    } catch (Exception e) {
+                        System.err.println("insira um NÚMERO valido");
+                        scan.next();
+                        continue;
+                    }
+                    if (target == j) {
+                        System.err.println("bro...");
+                        continue;
+                    }
+                    if (target > players.size() - 1 || target < 0) {
+                        System.err.println("insira um número valido");
+                        continue;
+                    }
+                    break;
+                }
                 players.get(j).attack(players.get(target));
                 System.out.println(players.get(j).getName() + " attacked -> " + players.get(target).stat());
             }

@@ -29,7 +29,6 @@ public class App {
                 if (players.get(j).getNocauteado() == true) {
                     continue;
                 }
-                // colocar textos para impedir ataquer estranhos/invalidos
                 System.out.println(players.get(j).getName() + " Coloque o numero de quem deseja atacar:");
                 int target = -1;
                 while (true) {
@@ -60,7 +59,7 @@ public class App {
                 }
             }
             if (KO >= playerCount - 1) {
-                //NÃO coloque sistema que mostre o vencedor isso spoila o final
+                //coloque sistema que mostre o vencedor ou empate
                 break;
             }
         }

@@ -35,7 +35,18 @@ public class Character {
     }
     
     public void attack(Character opponent){
-        opponent.life -= this.attack - opponent.defense;
+        int crit = (int)(Math.random() * 101);
+        int dmg;
+        if (crit < 15) {
+            dmg = (this.attack * 3) - opponent.defense;
+            System.out.println("Crit hit");
+        } else{
+            dmg = this.attack - opponent.defense;
+        }
+        if (dmg < 5) {
+            dmg = 5;
+        }
+        opponent.life -= dmg;
     }
 
     public String stat(){

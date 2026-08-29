@@ -12,7 +12,20 @@ public class App {
         while (true) {
             System.out.println("Digite o nome do personagem");
             String nome = scan.next();
-            Character player = new Character(nome);
+            System.out.println("Digite o número do arquétipo");
+            int arc;
+            while (true) {
+                try {
+                    arc = scan.nextInt();
+                } catch (Exception e) {
+                    System.err.println("insira um NÚMERO valido");
+                    scan.next();
+                    continue;
+                }
+                break;   
+            }
+            Character player = new Character(nome,arc);
+            System.out.println(player + "\n////////////////////");
             players.add(player);
             System.out.println("adicionar outro personagem? (y/n)");
             if (scan.next().equals("y")) {
@@ -50,7 +63,6 @@ public class App {
                     break;
                 }
                 players.get(j).attack(players.get(target));
-                System.out.println(players.get(j).getName() + " attacked -> " + players.get(target).stat());
             }
             for (int j = players.size() - 1; j >= 0;j--) {
                 if (players.get(j).getLife() <= 0 && players.get(j).getNocauteado() == false) {

@@ -62,7 +62,11 @@ public class App {
                     }
                     break;
                 }
-                players.get(j).attack(players.get(target));
+                if (players.get(j).getArcnum() == 3 || players.get(j).getArcnum() == 5) {
+                    players.get(j).attack(players.get(target), playerCount, KO);
+                } else {
+                    players.get(j).attack(players.get(target));
+                }
             }
             for (int j = players.size() - 1; j >= 0;j--) {
                 if (players.get(j).getLife() <= 0 && players.get(j).getNocauteado() == false) {
@@ -79,7 +83,7 @@ public class App {
                     if (character.getNocauteado()) {
                         continue;
                     } else {
-                        System.out.println(character.getName() + " Venceu com " + character.getLife() + " de vida");
+                        System.out.println("Vencedor: \n" + character);
                     }
                 }
                 break;

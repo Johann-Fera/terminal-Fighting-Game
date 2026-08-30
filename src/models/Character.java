@@ -18,7 +18,7 @@ public class Character {
         this.life = 100;
         this.nocauteado = false;
         if (a == 0) {
-            a = (int)(Math.random() * 4) + 1;
+            a = (int)(Math.random() * 5) + 1;
         }
         switch (a) {
             case 1:
@@ -133,34 +133,44 @@ public class Character {
         int dmg = this.attack;
         int trueDmg;
         int remaining = playerCount - KO;
+        boolean kaboom = false;
         if (this.arcNum == 3) {
             if (remaining <= 2) {
             dmg = this.attack * 2;
             }
-        } else {
-            if (this.arcNum == 5) {
-                if (tagged.contains(opponent) == false) {
-                    tagged.add(opponent);
-                }
-                /* continua trabaiano no tagger, 
-                compare o numero de tagged com player count para ativar o "purge" ou sla,
-                quando for ativado use um for para atacar a todos,
-                e multiplique aqui mesmo.
-                */
+        } else if (this.arcNum == 5) {
+            if (tagged.contains(opponent) == false) {
+                tagged.add(opponent);
+            }
+            if (tagged.size() == playerCount - 1) {
+                dmg = this.attack * (playerCount - 1);
+                kaboom = true;
             }
         }
         if (crit < this.critChance) {
-            trueDmg = (dmg * 3) - opponent.defense;
+            dmg = dmg * 3;
             System.out.println("Crit hit");
-        } else{
+        }
+        if (kaboom) {
+            System.out.println("kaboom");
+            for (Character character : tagged) {
+                trueDmg = dmg - character.defense;
+                if (trueDmg < 10) {
+                    trueDmg = 10;
+                }
+                character.life -= trueDmg;
+                System.out.println(this.name + " attacked " + trueDmg + " DMG -> " + character.stat());
+            }
+            tagged.clear();
+            kaboom = false;
+        } else {
             trueDmg = dmg - opponent.defense;
+            if (trueDmg < 10) {
+                trueDmg = 10;
+            }
+            opponent.life -= trueDmg;
+            System.out.println(this.name + " attacked " + trueDmg + " DMG -> " + opponent.stat());
         }
-        if (trueDmg < 10) {
-            trueDmg = 10;
-        }
-        opponent.life -= trueDmg;
-        System.out.println(this.name + " attacked " + trueDmg + " DMG -> " + opponent.stat());
-
     }
 
     public String stat(){

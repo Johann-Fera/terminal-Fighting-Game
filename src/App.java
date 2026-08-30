@@ -44,6 +44,7 @@ public class App {
                 }
                 System.out.println(players.get(j).getName() + " Coloque o numero de quem deseja atacar:");
                 int target = -1;
+                // coloca algo para quando tentarem atacar alguem ja nocauteado "não sobro nada"
                 while (true) {
                     try {
                         target = scan.nextInt();

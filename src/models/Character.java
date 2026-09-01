@@ -12,11 +12,13 @@ public class Character {
     int arcNum;
     boolean nocauteado;
     ArrayList<Character> tagged;
+    boolean bot;
 
-    public Character(String n, int a){
+    public Character(String n, int a, boolean b){
         this.name = n;
         this.life = 100;
         this.nocauteado = false;
+        this.bot = b;
         if (a == 0) {
             a = (int)(Math.random() * 5) + 1;
         }
@@ -66,7 +68,7 @@ public class Character {
                 this.attack = (int)(Math.random() * 11) + 1;
                 this.defense = 0;
                 this.critChance = 1;
-                this.archetype = "falha";
+                this.archetype = "bizonho";
                 this.arcNum = -1;
                 break;
         }
@@ -96,6 +98,10 @@ public class Character {
 
     public boolean getNocauteado(){
         return this.nocauteado;
+    }
+
+    public boolean getBot(){
+        return this.bot;
     }
 
     public void setNocauteado(){

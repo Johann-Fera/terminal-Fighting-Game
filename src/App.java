@@ -10,6 +10,7 @@ public class App {
         int playerCount = 0;
         ArrayList<Character> players = new ArrayList<Character>();
         while (true) {
+            boolean bot = false;
             System.out.println("Digite o nome do personagem");
             String nome = scan.next();
             System.out.println("Digite o número do arquétipo");
@@ -24,7 +25,11 @@ public class App {
                 }
                 break;   
             }
-            Character player = new Character(nome,arc);
+            System.out.println("é bot? (y/n)");
+            if (scan.next().equals("y")) {
+                bot = true;
+            }
+            Character player = new Character(nome,arc,bot);
             System.out.println(player + "\n////////////////////");
             players.add(player);
             System.out.println("adicionar outro personagem? (y/n)");
@@ -39,29 +44,49 @@ public class App {
                 System.out.println("Nº " + j + " " + players.get(j).stat());
             }
             for(int j = 0; j < players.size();j++){
+                int target = -1;
                 if (players.get(j).getNocauteado() == true) {
                     continue;
                 }
-                System.out.println(players.get(j).getName() + " Coloque o numero de quem deseja atacar:");
-                int target = -1;
-                // coloca algo para quando tentarem atacar alguem ja nocauteado "não sobro nada"
-                while (true) {
-                    try {
-                        target = scan.nextInt();
-                    } catch (Exception e) {
-                        System.err.println("insira um NÚMERO valido");
-                        scan.next();
-                        continue;
+                if (players.get(j).getBot()) {
+                    while (true) {
+                        target = (int)(Math.random() * playerCount);
+                        if (target == j) {
+                            continue;
+                        }
+                        if (players.get(target).getLife() <= 0) {
+                            continue;
+                        }
+                        break;
                     }
-                    if (target == j) {
-                        System.err.println("bro...");
-                        continue;
+                } else {
+                    System.out.println(players.get(j).getName() + " Coloque o numero de quem deseja atacar:");
+                    while (true) {
+                        try {
+                            target = scan.nextInt();
+                        } catch (Exception e) {
+                            System.err.println("insira um NÚMERO valido");
+                            scan.next();
+                            continue;
+                        }
+                        if (target == j) {
+                            System.err.println("bro...");
+                            continue;
+                        }
+                        if (target > players.size() - 1 || target < 0) {
+                            System.err.println("insira um número valido");
+                            continue;
+                        }
+                        if (players.get(target).getLife() < -50) {
+                            System.err.println("chega fi, cabo a graça");
+                            continue;
+                        }
+                        if (players.get(target).getLife() < -100) {
+                            System.err.println("não sobro nada");
+                            continue;
+                        }
+                        break;
                     }
-                    if (target > players.size() - 1 || target < 0) {
-                        System.err.println("insira um número valido");
-                        continue;
-                    }
-                    break;
                 }
                 if (players.get(j).getArcnum() == 3 || players.get(j).getArcnum() == 5) {
                     players.get(j).attack(players.get(target), playerCount, KO);
@@ -84,7 +109,12 @@ public class App {
                     if (character.getNocauteado()) {
                         continue;
                     } else {
-                        System.out.println("Vencedor: \n" + character);
+                        System.out.println("//////VENCEDOR//////");
+                        System.out.println(character);
+                        System.out.println("////////////////////");
+                        for (int j = 0; j < players.size();j++) {
+                            System.out.println("Nº " + j + " " + players.get(j).stat());
+                        }
                     }
                 }
                 break;

@@ -72,7 +72,8 @@ public class Character {
                 this.arcNum = -1;
                 break;
         }
-        if (n.equals("gambler")) {
+        // faça uma forma melhor de identificar os nomes
+        if (n.equals("gambler") || n.equals("gambling") || n.equals("hakari")) {
             this.attack = (int)(Math.random() * 701) - 600;
             this.defense = (int)(Math.random() * 126) - 75;
             this.critChance = 1;

@@ -9,6 +9,7 @@ public class Character {
     int defense;
     int critChance;
     String archetype;
+    String desc;
     int arcNum;
     boolean nocauteado;
     ArrayList<Character> tagged;
@@ -28,6 +29,7 @@ public class Character {
                 this.defense = (int)(Math.random() * 11) + 20;
                 this.critChance = 5;
                 this.archetype = "fat";
+                this.desc = "lutador bem resistente";
                 this.arcNum = 1;
                 break;
 
@@ -36,6 +38,7 @@ public class Character {
                 this.defense = (int)(Math.random() * 6) + 10;
                 this.critChance = 10;
                 this.archetype = "default";
+                this.desc = "lutador basico";
                 this.arcNum = 2;
                 break;
 
@@ -44,6 +47,7 @@ public class Character {
                 this.defense = (int)(Math.random() * 16) + 10;
                 this.critChance = 10;
                 this.archetype = "freak";
+                this.desc = "seu ataque dobra durante um x1";
                 this.arcNum = 3;
                 break;
 
@@ -52,6 +56,7 @@ public class Character {
                 this.defense = (int)(Math.random() * 6) + 5;
                 this.critChance = 5;
                 this.archetype = "vampire";
+                this.desc = "lifesteal duh";
                 this.arcNum = 4;
                 break;
 
@@ -60,6 +65,7 @@ public class Character {
                 this.defense = (int)(Math.random() * 6) + 5;
                 this.critChance = 5;
                 this.archetype = "tagger";
+                this.desc = "ataque todos e eles tomaram um ataque baseado na quantidade de lutadores";
                 this.arcNum = 5;
                 this.tagged = new ArrayList<Character>();
                 break;
@@ -69,22 +75,27 @@ public class Character {
                 this.defense = 0;
                 this.critChance = 1;
                 this.archetype = "bizonho";
+                this.desc = "erro um número ae, tonto";
                 this.arcNum = -1;
                 break;
         }
-        // faça uma forma melhor de identificar os nomes
-        if (n.equals("gambler") || n.equals("gambling") || n.equals("hakari")) {
-            this.attack = (int)(Math.random() * 701) - 600;
-            this.defense = (int)(Math.random() * 126) - 75;
-            this.critChance = 1;
-            this.archetype = "True gambler";
-            this.arcNum = 777;
+        String[] g_names = {"gambler", "gambling", "hakari"};
+        n.toLowerCase();
+        for (String gn : g_names) {
+            if (n.contains(gn)) {
+                this.attack = (int)(Math.random() * 701) - 600;
+                this.defense = (int)(Math.random() * 126) - 75;
+                this.critChance = 1;
+                this.archetype = "True gambler";
+                this.desc = "the true way of life";
+                this.arcNum = 777;
+            }   
         }
     }
 
     @Override
     public String toString(){
-        return "Name: " + this.name + "\nArchetype: " + this.archetype + "\nLife: " + this.life + "\nAttack: " + this.attack + "\nDefense: " + this.defense + "\nCrit chance: " + this.critChance;
+        return "Name: " + this.name + "\nArchetype: " + this.archetype + "\nDescription: " + this.desc + "\nLife: " + this.life + "\nAttack: " + this.attack + "\nDefense: " + this.defense + "\nCrit chance: " + this.critChance;
     }
     public String getName(){
         return this.name;
@@ -108,40 +119,13 @@ public class Character {
     public void setNocauteado(){
         this.nocauteado = true;
     }
-    
-    public void attack(Character opponent){
-        int crit = (int)(Math.random() * 101);
-        int dmg = this.attack;
-        int trueDmg;
-        if (crit < this.critChance) {
-            if (dmg < 0) {
-                trueDmg = 15 - opponent.defense;
-            } else {
-                trueDmg = (dmg * 3) - opponent.defense;
-            }
-            System.out.println("Crit hit");
-        } else{
-            trueDmg = dmg - opponent.defense;
-        }
-        if (trueDmg < 10) {
-            trueDmg = 10;
-        }
-        if (this.arcNum == 4) {
-            if (opponent.life > 0) {
-                this.life += trueDmg;
-            }
-        }
-        opponent.life -= trueDmg;
-        System.out.println(this.name + " attacked " + trueDmg + " DMG -> " + opponent.stat());
-    }
-
     public void attack(Character opponent,int playerCount, int KO){
         int crit = (int)(Math.random() * 101);
         int dmg = this.attack;
         int trueDmg;
-        int remaining = playerCount - KO;
         boolean kaboom = false;
         if (this.arcNum == 3) {
+            int remaining = playerCount - KO;
             if (remaining <= 2) {
             dmg = this.attack * 2;
             }
@@ -155,7 +139,11 @@ public class Character {
             }
         }
         if (crit < this.critChance) {
-            dmg = dmg * 3;
+            if (dmg < 0) {
+                dmg = 15;
+            } else {
+                dmg = dmg * 3;
+            }
             System.out.println("Crit hit");
         }
         if (kaboom) {
@@ -174,6 +162,11 @@ public class Character {
             trueDmg = dmg - opponent.defense;
             if (trueDmg < 10) {
                 trueDmg = 10;
+            }
+            if (this.arcNum == 4) {
+                if (opponent.life > 0) {
+                    this.life += trueDmg;
+                }
             }
             opponent.life -= trueDmg;
             System.out.println(this.name + " attacked " + trueDmg + " DMG -> " + opponent.stat());
